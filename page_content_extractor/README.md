@@ -23,3 +23,30 @@ u'This service extracts summaries and images from  hacker newsarticles for peopl
 >>> page.get_favicon_url()
 'https://github.com/fluidicon.png'
 ```
+
+
+### 额外说明
+
+这里只使用该项目的页面提取功能，并作为rpc服务端提供给其他工程调用，也就是说只使用该模块
+
+main.py文件作用：通过socket与其他系统通信
+
+requirements.txt: 仅运行page_content_extractor模块所需依赖
+
+### 独立运行步骤
+~~~bash
+
+# 创建单独虚拟环境
+python3 -m venv extractor_env
+source extractor_env/bin/activate 
+
+# 仅安装页面提取所需依赖
+pip install -r ./page_content_extractor/requirements.txt
+
+# 生成grpc代码
+#python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
+
+# 运行
+cd ..
+python3 -m page_content_extractor.main
+~~~

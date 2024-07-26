@@ -3,7 +3,7 @@ import logging
 
 import humanize
 
-from page_content_extractor.http import session
+from .http import session
 from .embeddable import EmbeddableExtractor
 from .exceptions import ParseError
 from .html import HtmlContentExtractor
