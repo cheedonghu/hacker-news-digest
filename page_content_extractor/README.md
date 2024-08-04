@@ -47,6 +47,5 @@ pip install -r ./page_content_extractor/requirements.txt
 #python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. service.proto
 
 # 运行
-cd ..
 python3 -m page_content_extractor.main
 ~~~
