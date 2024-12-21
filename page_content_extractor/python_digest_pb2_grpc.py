@@ -3,7 +3,9 @@
 import grpc
 import warnings
 
-from . import service_pb2 as service__pb2
+# import python_digest_pb2 as python__digest__pb2
+# 这里grpc自动生成的是绝对路径导入，但是这里需要相对路径
+from . import python_digest_pb2 as python__digest__pb2
 
 GRPC_GENERATED_VERSION = '1.65.1'
 GRPC_VERSION = grpc.__version__
@@ -20,7 +22,7 @@ except ImportError:
 if _version_not_supported:
     warnings.warn(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in service_pb2_grpc.py depends on'
+        + f' but the generated code in python_digest_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -30,7 +32,7 @@ if _version_not_supported:
     )
 
 
-class MyServiceStub(object):
+class DigestStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -40,13 +42,13 @@ class MyServiceStub(object):
             channel: A grpc.Channel.
         """
         self.RemoteFunction = channel.unary_unary(
-                '/myservice.MyService/RemoteFunction',
-                request_serializer=service__pb2.ServiceRequest.SerializeToString,
-                response_deserializer=service__pb2.ServiceResponse.FromString,
+                '/Digest.Digest/RemoteFunction',
+                request_serializer=python__digest__pb2.ServiceRequest.SerializeToString,
+                response_deserializer=python__digest__pb2.ServiceResponse.FromString,
                 _registered_method=True)
 
 
-class MyServiceServicer(object):
+class DigestServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def RemoteFunction(self, request, context):
@@ -56,22 +58,22 @@ class MyServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_MyServiceServicer_to_server(servicer, server):
+def add_DigestServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'RemoteFunction': grpc.unary_unary_rpc_method_handler(
                     servicer.RemoteFunction,
-                    request_deserializer=service__pb2.ServiceRequest.FromString,
-                    response_serializer=service__pb2.ServiceResponse.SerializeToString,
+                    request_deserializer=python__digest__pb2.ServiceRequest.FromString,
+                    response_serializer=python__digest__pb2.ServiceResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'myservice.MyService', rpc_method_handlers)
+            'Digest.Digest', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('myservice.MyService', rpc_method_handlers)
+    server.add_registered_method_handlers('Digest.Digest', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class MyService(object):
+class Digest(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
@@ -88,9 +90,9 @@ class MyService(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/myservice.MyService/RemoteFunction',
-            service__pb2.ServiceRequest.SerializeToString,
-            service__pb2.ServiceResponse.FromString,
+            '/Digest.Digest/RemoteFunction',
+            python__digest__pb2.ServiceRequest.SerializeToString,
+            python__digest__pb2.ServiceResponse.FromString,
             options,
             channel_credentials,
             insecure,
