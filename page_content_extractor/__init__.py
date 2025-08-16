@@ -8,8 +8,7 @@ from .embeddable import EmbeddableExtractor
 from .exceptions import ParseError
 from .html import HtmlContentExtractor
 from .pdf import PdfExtractor
-from . import python_digest_pb2
-from . import python_digest_pb2_grpc
+
 
 __all__ = ['ParseError', 'parser_factory']
 

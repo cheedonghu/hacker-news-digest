@@ -8,36 +8,28 @@ import grpc
 from concurrent import futures
 import time
 
-# 导入生成的proto文件
-from . import python_digest_pb2
-from . import python_digest_pb2_grpc
 # from . import __init__ as init
 from page_content_extractor import parser_factory
 
+from flask import Flask, request, jsonify
+from page_content_extractor import parser_factory
 
-# 实现服务
-class DegiestServicer(python_digest_pb2_grpc.DigestServicer):
-    def RemoteFunction(self, request, context):
-        # 在这里实现您的逻辑
-        print("server has received a msg: "+request.input)
-        parser = parser_factory(request.input)
-        content = parser.get_content()
-        response = python_digest_pb2.ServiceResponse()
-        # response.output = f"The extract content is: {request.input}"
-        response.output = f"The extract content is: {content}"
-        return response
+app = Flask(__name__)
 
-def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    python_digest_pb2_grpc.add_DigestServicer_to_server(DegiestServicer(), server)
-    server.add_insecure_port('[::]:50051')
-    server.start()
-    print("Server started on port 50051")
-    try:
-        while True:
-            time.sleep(86400)  # 一天
-    except KeyboardInterrupt:
-        server.stop(0)
+@app.route('/digest', methods=['GET'])
+def digest():
+    # 获取 GET 参数 input
+    input_text = request.args.get('newsUrl', '')
+    
+    if not input_text:
+        return "Missing 'input' parameter", 400
+    
+    # 调用原来的解析逻辑
+    parser = parser_factory(input_text)
+    content = parser.get_content()
+    
+    # 直接返回内容字符串
+    return content
 
 if __name__ == '__main__':
-    serve()
+    app.run(host='0.0.0.0', port=50051, debug=True)
